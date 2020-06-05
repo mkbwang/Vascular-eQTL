@@ -1,0 +1,7 @@
+genotypes/
+cleaned_genotypes/
+*.csv
+*.tsv
+*.docx
+subset_indv.txt
+
