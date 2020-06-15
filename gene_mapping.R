@@ -8,9 +8,11 @@ mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
 
 # allfields = listAttributes(mart)
 
-transcripts = read.table("transcripts.rpkm.tsv",nrows=1, skip=i, stringsAsFactors = FALSE)$V1
+transcripts = read.table("transformed_rpkm.txt",nrows=1, skip=i, stringsAsFactors = FALSE)
 
-transcript_noversion = unlist(strsplit(transcripts, "[.]"))[1]
+t_name = toString(transcripts[1])
+
+transcript_noversion = unlist(strsplit(t_name, "[.]"))[1]
 
 result = getBM(attributes = c("ensembl_gene_id", "ensembl_transcript_id", 
                                "chromosome_name", "transcript_start", "transcript_end",
