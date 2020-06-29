@@ -32,6 +32,13 @@ result$transcript_start = ifelse(result$transcript_start>1e5,
                                  1)
 result$transcript_end = result$transcript_end+1e5
 
+id_chr_match = result %>% select(ensembl_transcript_id, chromosome_name)
+id_chr_match$ensembl_transcript_id = transcripts$transcript
+
+match_filename = paste0("unionrange/ID_chr_match.csv")
+
+write.csv(id_chr_match, match_filename, row.names=FALSE, quote=FALSE)
+
 allchrs = c(seq(1,22),c("X","Y"))
 
 foreach(chr=allchrs) %do%{

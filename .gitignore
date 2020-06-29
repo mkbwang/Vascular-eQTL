@@ -4,4 +4,6 @@ cleaned_genotypes/
 *.tsv
 *.docx
 *.txt
+*.out
+replace_pheno/
 
