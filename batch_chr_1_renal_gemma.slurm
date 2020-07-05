@@ -1,26 +1,25 @@
 #!/bin/bash
 
-#SBATCH --job-name=wangmk_renal_chr_snp
+#SBATCH --job-name=wangmk_renal_chr_1
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --ntasks-per-node=12
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=100MB
 #SBATCH --array=1-7213
-#SBATCH --time=12:00:00
+#SBATCH --time=05:00:00
 
-cp cleaned_genotypes/chr_1_subset_renal.bed replace_pheno/chr_1_subset_renal_${SLURM_ARRAY_TASK_ID}.bed
-cp cleaned_genotypes/chr_1_subset_renal.bim replace_pheno/chr_1_subset_renal_${SLURM_ARRAY_TASK_ID}.bim
+
+restriction=$(Rscript gene_mapping_chr1.R)
+
+/net/wonderland/home/wangmk/plink  --bfile genotypes/imputepostqc_all_filter \
+ 	 --keep subset_indv_renal.txt $restriction \
+ 	  --make-bed --out replace_pheno/chr_1_subset_renal_${SLURM_ARRAY_TASK_ID}
 
 Rscript pheno_rep_renal_chr1.R
 
-gemma -bfile replace_pheno/chr_1_subset_renal_${SLURM_ARRAY_TASK_ID} -gk 1 \
- -o chr_1_subset_renal_${SLURM_ARRAY_TASK_ID}
 
 gemma -bfile replace_pheno/chr_1_subset_renal_${SLURM_ARRAY_TASK_ID} -k \
- output/chr_1_subset_renal_${SLURM_ARRAY_TASK_ID}.cXX.txt -lmm 3 \
+ output/subset_renal_total.cXX.txt -lmm 3 \
  -o chr_1_subset_renal_${SLURM_ARRAY_TASK_ID}
-
-rm replace_pheno/chr_1_subset_renal_${SLURM_ARRAY_TASK_ID}.bed
-rm replace_pheno/chr_1_subset_renal_${SLURM_ARRAY_TASK_ID}.bim
 
 
